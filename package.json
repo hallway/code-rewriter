@@ -1,11 +1,11 @@
 {
-  "name": "code-rewriter",
+  "name": "@hallway/code-rewriter",
   "version": "0.0.1",
   "description": "Script to replace code snippets with context",
-  "main": "index.js",
+  "main": "lib.js",
   "type": "module",
   "scripts": {
-    "start": "node index.js",
+    "start": "node lib.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

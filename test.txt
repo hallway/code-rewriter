@@ -1,0 +1,108 @@
+import confetti from "https://esm.sh/canvas-confetti@1.9.2?target=deno";
+
+// Function configuration
+export const config = {
+  name: "hello",
+  permissions: ["net"],
+  description: "A simple hello function with network access",
+  version: "1.0.0",
+  maxExecutionTime: 3000
+};
+
+export default async function (data: any) {
+  let effect = null;
+
+  // Only try to use confetti if we're in a browser environment
+  if (typeof document !== 'undefined') {
+    try {
+      effect = confetti();
+    } catch (error) {
+      console.error("Failed to create confetti effect:", error);
+    }
+  }
+
+  // Create a more user-friendly response
+  return {
+    message: `Hello, ${data.name || "World"}!`,
+    effect,
+    html: `
+      <html>
+        <head>
+          <title>Hello Function</title>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <style>
+            body {
+              font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              height: 100vh;
+              margin: 0;
+              background-color: #f5f5f5;
+            }
+            .container {
+              text-align: center;
+              padding: 2rem;
+              background-color: white;
+              border-radius: 8px;
+              box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+              max-width: 500px;
+            }
+            h1 {
+              color: #4f46e5;
+              margin-bottom: 1rem;
+            }
+            p {
+              color: #4b5563;
+              margin-bottom: 2rem;
+            }
+            button {
+              background-color: #4f46e5;
+              color: white;
+              border: none;
+              padding: 0.75rem 1.5rem;
+              border-radius: 4px;
+              cursor: pointer;
+              font-weight: 500;
+              transition: background-color 0.2s;
+            }
+            button:hover {
+              background-color: #4338ca;
+            }
+            a {
+              display: block;
+              margin-top: 2rem;
+              color: #6b7280;
+              text-decoration: none;
+            }
+            a:hover {
+              text-decoration: underline;
+            }
+          </style>
+        </head>
+        <body>
+          <div class="container">
+            <h1>Hello, ${data.name || "World"}! 👋</h1>
+            <p>This is a simple serverless function running on Deno.</p>
+            <button id="confetti-btn">Celebrate!</button>
+            <a href="http://example.local:8000/src/hello.ts" target="_blank">View Source</a>
+          </div>
+
+          <script type="module">
+            import confetti from "https://esm.sh/canvas-confetti@1.9.2";
+
+            document.getElementById('confetti-btn').addEventListener('click', () => {
+              confetti({
+                particleCount: 100,
+                spread: 70,
+                origin: { y: 0.6 }
+              });
+            });
+          </script>
+        </body>
+      </html>
+    `,
+    contentType: "text/html; charset=UTF-8"
+  };
+}
